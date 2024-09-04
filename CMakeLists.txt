@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(multithread_logger LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include_directories(${PROJECT_SOURCE_DIR}/headers)
+include_directories(${PROJECT_SOURCE_DIR}/sources)
+
+set(SOURCES
+    headers/log.h
+    headers/log_printer.h
+    headers/console_printer.h
+    headers/scope_timer.h
+    headers/file_printer.h
+    sources/log.cpp
+    sources/console_printer.cpp
+    sources/scope_timer.cpp
+    sources/file_printer.cpp
+)
+
+add_executable(multithread_logger sources/main.cpp ${SOURCES})
