@@ -89,7 +89,7 @@ Logger getLogger(const std::string& prefix = "");
 std::string extract_method_name(const std::string& prettyFunction);
 
 #define LOG_WITH_LOG_LEVEL(log_level, logger)                          \
-  logger(log_level) << "[" << extract_method_name(__PRETTY_FUNCTION__) \
+  logger(log_level) << "[" << logger::extract_method_name(__PRETTY_FUNCTION__) \
                     << "]: " << __FILE__ << ":" << __LINE__ << " "
 
 #define LOG_INFO(logger) LOG_WITH_LOG_LEVEL(INFO, logger)
