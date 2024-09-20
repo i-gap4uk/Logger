@@ -3,6 +3,8 @@
 #include "log.h"
 #include "scope_timer.h"
 
+using namespace logger;
+
 void f1() {
   auto logger1 = getLogger();
 

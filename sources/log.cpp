@@ -89,12 +89,12 @@ std::string assemble_log_message(const std::string &message,
   return stream.str();
 }
 
-std::shared_ptr<LogPrinter> create_printer(LogDestination destination) {
+std::shared_ptr<logger::LogPrinter> create_printer(LogDestination destination) {
   switch (destination) {
     case log_constants::LogDestination::CONSOLE:
-      return std::make_shared<ConsolePrinter>();
+      return std::make_shared<logger::ConsolePrinter>();
     case LogDestination::FILE:
-      return std::make_shared<FilePrinter>();
+      return std::make_shared<logger::FilePrinter>();
       ;
       break;
     default:
@@ -137,6 +137,7 @@ std::string getClassName(const std::string &full_method_name) {
 
 }  // namespace
 
+namespace logger {
 Logger::Accumulator::Accumulator(Logger *logger) : _logger(logger) {}
 
 Logger::Accumulator::Accumulator(const Accumulator &other) {
@@ -300,3 +301,5 @@ std::string extract_method_name(const std::string &prettyFunction) {
   ss << getClassName(prettyFunction) << "::" << getMethodName(prettyFunction);
   return ss.str();
 }
+
+}  // namespace logger

@@ -6,6 +6,7 @@
 
 #include "log_printer.h"
 
+namespace logger {
 class FilePrinter : public LogPrinter {
  public:
   FilePrinter();
@@ -20,5 +21,5 @@ class FilePrinter : public LogPrinter {
   std::mutex _file_mutex;
   std::ofstream _file_stream;
 };
-
+}  // namespace logger
 #endif  // FILE_PRINTER_H

@@ -5,6 +5,8 @@
 
 #include "utils/constants.h"
 
+namespace logger {
+
 class LogPrinter {
  public:
   LogPrinter(log_constants::LogDestination destination)
@@ -20,4 +22,5 @@ class LogPrinter {
   log_constants::LogDestination _destination;
 };
 
+}  // namespace logger
 #endif  // LOG_PRINTER_H

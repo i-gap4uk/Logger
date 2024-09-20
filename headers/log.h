@@ -14,6 +14,7 @@
 
 #include "utils/constants.h"
 
+namespace logger {
 class LogPrinter;
 class Logger;
 
@@ -96,4 +97,5 @@ std::string extract_method_name(const std::string& prettyFunction);
 #define LOG_WARNING(logger) LOG_WITH_LOG_LEVEL(WARNING, logger)
 #define LOG_ERROR(logger) LOG_WITH_LOG_LEVEL(ERROR, logger)
 
+}  // namespace logger
 #endif  // LOG_H

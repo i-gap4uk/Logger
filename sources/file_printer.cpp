@@ -1,7 +1,7 @@
 #include "file_printer.h"
 
 #include "utils/constants.h"
-
+namespace logger {
 FilePrinter::FilePrinter() : LogPrinter(log_constants::LogDestination::FILE) {
   init();
 }
@@ -24,3 +24,4 @@ void FilePrinter::shutdown() {
   _file_stream << std::endl << "[ Stop logging ]";
   _file_stream.close();
 }
+}  // namespace logger
