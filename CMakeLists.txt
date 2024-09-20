@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(logger LANGUAGES CXX)
+project(logger VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -23,4 +23,22 @@ set(SOURCES
     sources/file_printer.cpp
 )
 
-add_executable(multithread_logger main.cpp ${SOURCES} ${HEADERS})
+# Option to build the static library
+option(BUILD_STATIC_LIB "Build the static library" ON)
+
+# Option to build the examples (main.cpp)
+option(BUILD_EXAMPLES "Build the logger's usage examples" OFF)
+
+if(BUILD_STATIC_LIB)
+    add_library(logger STATIC ${SOURCES})
+    target_include_directories(logger PUBLIC ${PROJECT_SOURCE_DIR}/headers)
+    install(TARGETS logger
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+            RUNTIME DESTINATION bin)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/headers/ DESTINATION headers)
+endif()
+
+if(BUILD_EXAMPLES)
+    add_executable(logger_examples main.cpp ${SOURCES} ${HEADERS})
+endif()
