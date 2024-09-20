@@ -169,6 +169,8 @@ Logger::Logger(const std::string &prefix)
 Logger::Logger(const Logger &other) {
   _prefix = other._prefix;
   _log_level = other._log_level;
+  _selected_printers = other._selected_printers;
+  _isRunning.store(other._isRunning.load());
 }
 
 Logger::~Logger() { stopQueueProcessing(); }
@@ -176,6 +178,14 @@ Logger::~Logger() { stopQueueProcessing(); }
 Logger::Accumulator Logger::operator()(LogLevel log_level) {
   _log_level = log_level;
   return Accumulator(this);
+}
+
+Logger &Logger::operator=(const Logger &other) {
+  _prefix = other._prefix;
+  _log_level = other._log_level;
+  _selected_printers = other._selected_printers;
+  _isRunning.store(other._isRunning.load());
+  return *this;
 }
 
 void Logger::add_log_destination(log_constants::LogDestination destination) {

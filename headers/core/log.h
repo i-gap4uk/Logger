@@ -15,6 +15,7 @@
 #include "utils/constants.h"
 
 namespace logger {
+
 class LogPrinter;
 class Logger;
 
@@ -47,6 +48,8 @@ class Logger {
   ~Logger();
 
   Accumulator operator()(log_constants::LogLevel log_level);
+
+  Logger& operator=(const Logger& other);
 
   template <typename T>
   Accumulator operator<<(const T& value) {
@@ -87,15 +90,16 @@ class Logger {
 Logger getLogger(const std::string& prefix = "");
 
 std::string extract_method_name(const std::string& prettyFunction);
-
-#define LOG_WITH_LOG_LEVEL(log_level, logger)                          \
-  logger(log_level) << "[" << logger::extract_method_name(__PRETTY_FUNCTION__) \
-                    << "]: " << __FILE__ << ":" << __LINE__ << " "
-
-#define LOG_INFO(logger) LOG_WITH_LOG_LEVEL(INFO, logger)
-#define LOG_DEBUG(logger) LOG_WITH_LOG_LEVEL(DEBUG, logger)
-#define LOG_WARNING(logger) LOG_WITH_LOG_LEVEL(WARNING, logger)
-#define LOG_ERROR(logger) LOG_WITH_LOG_LEVEL(ERROR, logger)
-
 }  // namespace logger
+
+#define LOG_WITH_LOG_LEVEL(log_level, logger_instance)           \
+  logger_instance(log_level)                                     \
+      << "[" << logger::extract_method_name(__PRETTY_FUNCTION__) \
+      << "]: " << __FILE__ << ":" << __LINE__ << " "
+
+#define LOG_INFO(logger_instance) LOG_WITH_LOG_LEVEL(INFO, logger_instance)
+#define LOG_DEBUG(logger_instance) LOG_WITH_LOG_LEVEL(DEBUG, logger_instance)
+#define LOG_WARNING(logger_instance) \
+  LOG_WITH_LOG_LEVEL(WARNING, logger_instance)
+#define LOG_ERROR(logger_instance) LOG_WITH_LOG_LEVEL(ERROR, logger_instance)
 #endif  // LOG_H

@@ -12,8 +12,9 @@ set(HEADERS
     headers/core/log.h
     headers/interfaces/log_printer.h
     headers/output/console_printer.h
-    headers/utils/scope_timer.h
     headers/output/file_printer.h
+    headers/utils/scope_timer.h
+    headers/utils/constants.h
 )
 
 set(SOURCES
