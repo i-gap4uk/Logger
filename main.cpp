@@ -7,7 +7,8 @@ void f1() {
   auto logger1 = getLogger();
 
   logger1.add_log_destination(log_constants::LogDestination::FILE);
-  logger1(DEBUG) << "Running a thread";
+  logger1(DEBUG)
+      << "Running a thread";  // also could be used LOG_DEBUG(logger1) << ...
 
   auto logger2 = getLogger("f1");
   logger2 << "Running a thread" << " but log to another logger";
@@ -35,7 +36,7 @@ int main() {
   ScopeTimer t;
 
   auto logger = getLogger();
-  logger << "Starting the app";
+  LOG_INFO(logger) << "Starting the app";
 
   std::thread t1(f1);
   std::thread t2(f2);

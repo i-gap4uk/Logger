@@ -20,16 +20,50 @@ namespace {
 std::string log_level_to_string(LogLevel log_level) {
   switch (log_level) {
     case INFO:
-      return std::string("INFO");
+      return std::string(" INFO  ");
     case DEBUG:
-      return std::string("DEBUG");
+      return std::string(" DEBUG ");
     case WARNING:
       return std::string("WARNING");
     case ERROR:
-      return std::string("ERROR");
+      return std::string(" ERROR ");
     default:
       return std::string("UNKNOWN");
   }
+}
+
+constexpr const char *RESET = "\033[0m";
+
+// Foreground color codes
+constexpr const char *RED = "\033[31m";
+constexpr const char *GREEN = "\033[32m";
+constexpr const char *YELLOW = "\033[33m";
+constexpr const char *BLUE = "\033[34m";
+
+std::string color_text(const std::string &text, LogLevel log_level) {
+  std::string colored_text;
+
+  switch (log_level) {
+    case INFO:
+      colored_text.append(BLUE);
+      break;
+    case DEBUG:
+      colored_text.append(GREEN);
+      break;
+    case WARNING:
+      colored_text.append(YELLOW);
+      break;
+    case ERROR:
+      colored_text.append(RED);
+      break;
+    default:
+      return text;
+  }
+
+  colored_text.append(text);
+  colored_text.append(RESET);
+
+  return colored_text;
 }
 
 std::string assemble_log_message(const std::string &message,
@@ -38,16 +72,17 @@ std::string assemble_log_message(const std::string &message,
 
   auto now = std::chrono::system_clock::now();
   std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-  stream << std::put_time(std::localtime(&now_time), "%d/%m/%Y %H:%M:%S")
-         << "; ";
+  stream << std::put_time(std::localtime(&now_time), "[%d/%m/%Y] [%H:%M:%S]");
+  stream << " ";
 
-  stream << log_level_to_string(log_level) << "; ";
+  stream << "[" << color_text(log_level_to_string(log_level), log_level)
+         << "] ";
 
   if (!prefix.empty()) {
     stream << prefix;
   }
 
-  stream << "(" << std::this_thread::get_id() << ")";
+  stream << "[" << std::this_thread::get_id() << "]";
   stream << ": ";
   stream << message << std::endl;
 
@@ -65,6 +100,39 @@ std::shared_ptr<LogPrinter> create_printer(LogDestination destination) {
     default:
       return {};
   }
+}
+
+std::string getMethodName(const std::string &full_method_name) {
+  std::string tmp = full_method_name;
+  size_t colonPos = tmp.find("::");
+  if (colonPos != std::string::npos) {
+    tmp.erase(0, colonPos + 2);
+  } else {
+    size_t spacePos = tmp.find(' ');
+    if (spacePos != std::string::npos) {
+      tmp.erase(0, spacePos + 1);
+    }
+  }
+  size_t parenPos = tmp.find('(');
+  if (parenPos != std::string::npos) {
+    tmp.erase(parenPos);
+  }
+  return tmp;
+}
+
+std::string getClassName(const std::string &full_method_name) {
+  std::string tmp = full_method_name;
+  size_t colonPos = tmp.find("::");
+  if (colonPos != std::string::npos) {
+    tmp.erase(colonPos);
+    size_t spacePos = tmp.find_last_of(' ');
+    if (spacePos != std::string::npos) {
+      tmp.erase(0, spacePos + 1);
+    }
+    return tmp;
+  }
+  tmp.erase(0, tmp.length());
+  return tmp;
 }
 
 }  // namespace
@@ -95,6 +163,11 @@ Logger::Logger(const std::string &prefix)
     : _isRunning(false), _log_level(INFO), _prefix(prefix) {
   add_log_destination(LogDestination::CONSOLE);
   startQueueProcessing();
+}
+
+Logger::Logger(const Logger &other) {
+  _prefix = other._prefix;
+  _log_level = other._log_level;
 }
 
 Logger::~Logger() { stopQueueProcessing(); }
@@ -221,3 +294,9 @@ void Logger::processQueue() {
 }
 
 Logger getLogger(const std::string &prefix) { return Logger(prefix); }
+
+std::string extract_method_name(const std::string &prettyFunction) {
+  std::stringstream ss;
+  ss << getClassName(prettyFunction) << "::" << getMethodName(prettyFunction);
+  return ss.str();
+}

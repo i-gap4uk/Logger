@@ -42,6 +42,7 @@ class Logger {
   };
 
   Logger(const std::string& prefix = "");
+  Logger(const Logger& other);
   ~Logger();
 
   Accumulator operator()(log_constants::LogLevel log_level);
@@ -83,5 +84,16 @@ class Logger {
 };
 
 Logger getLogger(const std::string& prefix = "");
+
+std::string extract_method_name(const std::string& prettyFunction);
+
+#define LOG_WITH_LOG_LEVEL(log_level, logger)                          \
+  logger(log_level) << "[" << extract_method_name(__PRETTY_FUNCTION__) \
+                    << "]: " << __FILE__ << ":" << __LINE__ << " "
+
+#define LOG_INFO(logger) LOG_WITH_LOG_LEVEL(INFO, logger)
+#define LOG_DEBUG(logger) LOG_WITH_LOG_LEVEL(DEBUG, logger)
+#define LOG_WARNING(logger) LOG_WITH_LOG_LEVEL(WARNING, logger)
+#define LOG_ERROR(logger) LOG_WITH_LOG_LEVEL(ERROR, logger)
 
 #endif  // LOG_H
