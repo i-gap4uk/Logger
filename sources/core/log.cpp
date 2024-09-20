@@ -1,4 +1,4 @@
-#include "log.h"
+#include "core/log.h"
 
 #include <algorithm>
 #include <chrono>
@@ -11,8 +11,8 @@
 #include <thread>
 #include <vector>
 
-#include "console_printer.h"
-#include "file_printer.h"
+#include "output/console_printer.h"
+#include "output/file_printer.h"
 
 using namespace log_constants;
 

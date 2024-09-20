@@ -4,7 +4,7 @@
 #include <fstream>
 #include <mutex>
 
-#include "log_printer.h"
+#include "interfaces/log_printer.h"
 
 namespace logger {
 class FilePrinter : public LogPrinter {

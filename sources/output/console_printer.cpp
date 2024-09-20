@@ -1,4 +1,4 @@
-#include "console_printer.h"
+#include "output/console_printer.h"
 
 #include <iostream>
 namespace logger {

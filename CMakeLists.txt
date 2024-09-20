@@ -9,18 +9,18 @@ include_directories(${PROJECT_SOURCE_DIR}/headers)
 include_directories(${PROJECT_SOURCE_DIR}/sources)
 
 set(HEADERS
-    headers/log.h
-    headers/log_printer.h
-    headers/console_printer.h
-    headers/scope_timer.h
-    headers/file_printer.h
+    headers/core/log.h
+    headers/interfaces/log_printer.h
+    headers/output/console_printer.h
+    headers/utils/scope_timer.h
+    headers/output/file_printer.h
 )
 
 set(SOURCES
-    sources/log.cpp
-    sources/console_printer.cpp
-    sources/scope_timer.cpp
-    sources/file_printer.cpp
+    sources/core/log.cpp
+    sources/output/console_printer.cpp
+    sources/utils/scope_timer.cpp
+    sources/output/file_printer.cpp
 )
 
 # Option to build the static library

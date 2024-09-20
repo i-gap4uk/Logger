@@ -1,7 +1,7 @@
 #ifndef CONSOLE_PRINTER_H
 #define CONSOLE_PRINTER_H
 
-#include <log_printer.h>
+#include <interfaces/log_printer.h>
 
 #include <mutex>
 namespace logger {

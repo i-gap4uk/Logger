@@ -1,7 +1,7 @@
 #include <thread>
 
-#include "log.h"
-#include "scope_timer.h"
+#include "core/log.h"
+#include "utils/scope_timer.h"
 
 using namespace logger;
 
