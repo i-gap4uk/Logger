@@ -11,6 +11,7 @@ This project is a customizable, thread-safe logging library in C++. The logger s
   - [Basic Setup](#basic-setup)
   - [Adding Custom Log Destinations](#adding-custom-log-destinations)
   - [Thread Safety](#thread-safety)
+- [CMake Integration](#cmake-integration)
 
 ## Features
 
@@ -88,3 +89,26 @@ logger.add_log_printer(std::make_shared<CustomLogPrinter>());
 
 ### Thread Safety
 The Logger is designed to be thread-safe. Each Logger instance manages its own message queue, and logging operations are synchronized internally. The static collection of printers is protected by a mutex to prevent race conditions when adding or removing printers dynamically.
+
+## CMake Integration
+To build the logger as a static library, follow these steps:
+1. Clone the repository:
+```bash
+git clone git@github.com:i-gap4uk/Logger.git
+cd Logger
+```
+2. Build the project: By default, the project builds the logger as a static library.
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+This will create a static library file, typically liblogger.a on Linux, inside the build directory.
+
+### Optional: Build Examples
+You can build and run the examples provided in the logger repository by enabling the **BUILD_EXAMPLES** flag when configuring the project:
+```bash
+cmake -DBUILD_EXAMPLES=ON ..
+make
+```
